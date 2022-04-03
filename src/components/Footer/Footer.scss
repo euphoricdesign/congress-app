@@ -1,0 +1,18 @@
+.footer-container {
+  display: flex;
+  justify-content: flex-end;
+  align-items: flex-end;
+  footer {
+    position: absolute;
+    bottom: 0;
+    background: #0241bd24;
+    height: 13vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100vw;
+    p {
+      color: #383434;
+    }
+  }
+}
