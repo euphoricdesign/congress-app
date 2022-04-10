@@ -7,7 +7,6 @@ import './Header.scss'
 
 export default function Header() {
   const {term, onHandleTermSearch} = useContext(myContext)
-  // console.log(term)
 
 
   return (
@@ -18,7 +17,7 @@ export default function Header() {
           <input 
             type="text" 
             placeholder='Search' 
-            id='searchBox' 
+            id='searchBox'
             value={term} 
             onChange={onHandleTermSearch} 
           />

@@ -1,53 +1,47 @@
-import React, {useContext, useState} from 'react'
+import React, {useContext} from 'react'
 import useMembers from '../../hooks/useMembers'
-import Container from 'react-bootstrap/Container';
-import { myContext } from '../../context/myContext';
+import Container from 'react-bootstrap/Container'
+import { myContext } from '../../context/myContext'
 import './Table.scss'
 
 
 export default function TableComponent() {
-  const [filterByColumn, setFilterByColumn] = useState({})
-
-
   const {data} = useMembers()
+  
   const {term,advancedSearchActive} = useContext(myContext)
 
-  
-  const rows = data && data.map((member) => ({
-    _id: member.id,
-    _url: `/members/${member.id}`,
-    _meta: member,
-    name: `${member.first_name} ${member.last_name}`,
-    title: member.title,
-    party: member.party,
-    gender: member.gender,
-  })) 
-
-
-  const headers = {
-    name: {
-      label: "Name",
-      filterType: "string",
-    },
-    title: {
-      label: "Title",
-      filterType: "string",
-    },
-    party: {
-      label: "Party",
-      filterType: "select"
-    },
-    gender: {
-      label: "Gender",
-      filterType: "select"
-    },
+  const partyString = (party) => {
+    let partyString
+    switch (party) {
+      case 'D' : 
+        partyString = "Democrata"
+        break
+      case 'R' : 
+        partyString = "Republicano"
+        break
+      case 'ID' :
+        partyString = "Independiente"
+        break
+      default : 
+        partyString = ""
+    }
+    return partyString
   }
 
-  
-
   const filterdUsers = () => {
-    const filtered = data.filter(obj => obj.first_name.toLowerCase().includes(term.toLowerCase()))
-    return filtered
+    let resultadosBusqueda = data.filter((elemento)=>{
+      // let rowToString = Object.values(elemento).join(" + ").toLowerCase();
+      // let globalCondition = term !== null && rowToString.includes(term.toLowerCase());
+
+      if(elemento.first_name.toString().toLowerCase().includes(term.toLowerCase())
+      || elemento.title.toString().toLowerCase().includes(term.toLowerCase())
+      || elemento.party.toString().toLowerCase().includes(term.toLowerCase())
+      || elemento.gender.toString().toLowerCase().includes(term.toLowerCase())
+      ){
+        return elemento;
+      }
+    });
+    return resultadosBusqueda
   }
 
   return (
@@ -58,41 +52,45 @@ export default function TableComponent() {
           <thead>
             <tr>
               <th >
-                {advancedSearchActive ? `Filter by ${headers.name.label}` : `${headers.name.label}`}
+                {advancedSearchActive ? null : 'Name'}
                 {advancedSearchActive && (
                   <div className='input-container'>
                     <input 
                       type="text"
+                      placeholder='Search by name'
                     />
                   </div>
                 )}
               </th>
               <th >
-                {advancedSearchActive ? `Filter by ${headers.title.label}` : `${headers.title.label}`}
+              {advancedSearchActive ? null : 'Title'}
                 {advancedSearchActive && (
                   <div className='input-container'>
                     <input 
                       type="text"
+                      placeholder='Search by title'
                     />
                   </div>
                 )}
               </th>
               <th>
-                {advancedSearchActive ? `Filter by ${headers.party.label}` : `${headers.party.label}`}
+              {advancedSearchActive ? null : 'Party'}
                 {advancedSearchActive && (
                   <div className='input-container'>
                     <input 
                       type="text"
+                      placeholder='Search by party'
                     />
                   </div>
                 )}
               </th>
               <th>
-                {advancedSearchActive ? `Filter by ${headers.gender.label}` : `${headers.gender.label}`}
+              {advancedSearchActive ? null : 'Gender'}
                 {advancedSearchActive && (
                   <div className='input-container'>
                     <input 
                       type="text"
+                      placeholder='Search by gender'
                     />
                   </div>
                 )}
@@ -105,7 +103,7 @@ export default function TableComponent() {
                 <tr key={obj.id}>
                   <td >{`${obj.first_name} ${data[0].last_name}`}</td>
                   <td >{obj.title}</td>
-                  <td>{obj.party}</td>
+                  <td>{partyString(obj.party)}</td>
                   <td>{obj.gender}</td>
               </tr>
               )
