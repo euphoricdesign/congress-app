@@ -1,0 +1,31 @@
+.memberDetailsContainer {
+  margin-top: 10px;
+
+  .memberCard {
+    margin-top: 1rem;
+  }
+  .fullname {
+    font-weight: 600;
+    color: #0241bd99;
+    margin-top: 10px;
+  }
+}
+
+.flecha {
+  color: #0241bd99;
+}
+
+.link {
+  img {
+    width: 25px;
+  }
+}
+
+.loader {
+  text-align: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  margin-top: 20%;
+}

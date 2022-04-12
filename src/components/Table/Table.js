@@ -1,119 +1,95 @@
-import React, {useContext} from 'react'
+import React, { useMemo, useContext } from 'react'
+import { useTable, useGlobalFilter, useFilters } from 'react-table'
+import {COLUMNS} from '../colums'
 import useMembers from '../../hooks/useMembers'
 import Container from 'react-bootstrap/Container'
+import GlobalFilter from '../GlobalFilter'
 import { myContext } from '../../context/myContext'
+import { Link } from 'react-router-dom'
+import BarLoader from "react-spinners/BarLoader";
 import './Table.scss'
 
 
 export default function TableComponent() {
-  const {data} = useMembers()
+  const {data, loading} = useMembers()
+  // console.log(data)
+
+  const {advancedSearchActive} =useContext(myContext)
   
-  const {term,advancedSearchActive} = useContext(myContext)
+  const columns = useMemo(() => COLUMNS,[])
+  const congressPerson = useMemo(() => data,[data])
 
-  const partyString = (party) => {
-    let partyString
-    switch (party) {
-      case 'D' : 
-        partyString = "Democrata"
-        break
-      case 'R' : 
-        partyString = "Republicano"
-        break
-      case 'ID' :
-        partyString = "Independiente"
-        break
-      default : 
-        partyString = ""
-    }
-    return partyString
-  }
+  
+  const {
+    getTableProps,
+    getTableBodyProps, 
+    headerGroups, 
+    footerGroups,
+    rows, 
+    prepareRow,
+    state,
+    setGlobalFilter
+  } = useTable({
+    columns,
+    data: congressPerson
+  }, 
+  useFilters,
+  useGlobalFilter
+  )
 
-  const filterdUsers = () => {
-    let resultadosBusqueda = data.filter((elemento)=>{
-      // let rowToString = Object.values(elemento).join(" + ").toLowerCase();
-      // let globalCondition = term !== null && rowToString.includes(term.toLowerCase());
-
-      if(elemento.first_name.toString().toLowerCase().includes(term.toLowerCase())
-      || elemento.title.toString().toLowerCase().includes(term.toLowerCase())
-      || elemento.party.toString().toLowerCase().includes(term.toLowerCase())
-      || elemento.gender.toString().toLowerCase().includes(term.toLowerCase())
-      ){
-        return elemento;
-      }
-    });
-    return resultadosBusqueda
-  }
+  const {globalFilter} = state
 
   return (
     <Container>
-    {data !== undefined ? (
+    {loading ? (
+      <div className="loader">
+        <BarLoader 
+          size={80} 
+          color={"#5790e6;"}
+          loading={loading} 
+        />
+      </div>
+      ) : (
+      <>
+        <GlobalFilter filter={globalFilter} setFilter={setGlobalFilter}/>
       <div className="App">
-        <table>
+        <table {...getTableProps()}>
           <thead>
-            <tr>
-              <th >
-                {advancedSearchActive ? null : 'Name'}
-                {advancedSearchActive && (
-                  <div className='input-container'>
-                    <input 
-                      type="text"
-                      placeholder='Search by name'
-                    />
-                  </div>
-                )}
-              </th>
-              <th >
-              {advancedSearchActive ? null : 'Title'}
-                {advancedSearchActive && (
-                  <div className='input-container'>
-                    <input 
-                      type="text"
-                      placeholder='Search by title'
-                    />
-                  </div>
-                )}
-              </th>
-              <th>
-              {advancedSearchActive ? null : 'Party'}
-                {advancedSearchActive && (
-                  <div className='input-container'>
-                    <input 
-                      type="text"
-                      placeholder='Search by party'
-                    />
-                  </div>
-                )}
-              </th>
-              <th>
-              {advancedSearchActive ? null : 'Gender'}
-                {advancedSearchActive && (
-                  <div className='input-container'>
-                    <input 
-                      type="text"
-                      placeholder='Search by gender'
-                    />
-                  </div>
-                )}
-              </th>
-            </tr>
-          </thead>
-          <tbody>
-            {filterdUsers().map((obj) => {
-              return (
-                <tr key={obj.id}>
-                  <td >{`${obj.first_name} ${data[0].last_name}`}</td>
-                  <td >{obj.title}</td>
-                  <td>{partyString(obj.party)}</td>
-                  <td>{obj.gender}</td>
+            {headerGroups.map(headerGroup => (
+              <tr {...headerGroup.getHeaderGroupProps()}>
+                {headerGroup.headers.map(column => (
+                  <th style={{'width':'20%'}} {...column.getHeaderProps()}>{column.render('Header')}
+                    {advancedSearchActive ? <div>{column.canFilter ? column.render('Filter') : null}</div> : null}
+                  </th>
+                ))}
               </tr>
+            ))}
+          </thead>
+          <tbody {...getTableBodyProps()}>
+            {rows.map(row => {
+              prepareRow(row)
+              return (
+                <tr {...row.getRowProps()}>
+                  {row.cells.map(cell => {
+                    return <td {...cell.getCellProps()}><Link className='link' to={`/members/${row.original.id}`} key={cell.row.id}>{cell.render('Cell')}</Link></td>
+                  })}
+                </tr>
               )
             })}
           </tbody>
+          <tfoot>
+            {footerGroups.map(footerGroup => (
+              <tr {...footerGroup.getFooterGroupProps()}>
+                {footerGroup.headers.map(column => (
+                    <td {...column.getFooterProps}>{column.render('Footer')}</td>
+                ))}
+              </tr>
+            ))}
+          </tfoot>
         </table>
       </div>
-      ): <div className="loading">
-          loading...
-        </div>}
+      </>
+      )}
     </Container>
   )
 }

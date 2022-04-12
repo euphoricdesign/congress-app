@@ -1,0 +1,40 @@
+.filter-container {
+  display: flex;
+  justify-content: center;
+  div {
+    margin-top: 40px;
+    position: relative;
+    display: flex;
+    flex-direction: row;
+    // height: 20px;
+    border-radius: 2px;
+    // padding: 1.4rem 2rem 1.6rem;
+    background: white;
+    &::after {
+      content: "";
+      position: absolute;
+      left: 0px;
+      right: 0px;
+      bottom: 0px;
+      z-index: 999;
+      height: 2px;
+      border-bottom-left-radius: 2px;
+      border-bottom-right-radius: 2px;
+      background-position: 0% 0%;
+      background: linear-gradient(to right, #B294FF, #57E6E6, #FEFFB8, #57E6E6, #B294FF, #57E6E6);
+      background-size: 500% auto;
+    }
+    input {
+      height: 28px;
+      border-radius: 2px;
+      width: 150px;
+      outline: none;
+      border: transparent;
+      padding: 20px;
+      background: #c5c9ce00;
+      &::placeholder {
+        font-size: 14px;
+      }
+    }
+  }
+}

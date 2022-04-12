@@ -4,7 +4,8 @@ import axios from '../axios'
 
 
 const useMembers = () => {
-  const [data, setData] = useState()
+  const [data, setData] = useState([])
+  const [loading, setLoading] = useState(true)
 
 
   const fetchMembers = async () => {
@@ -13,6 +14,7 @@ const useMembers = () => {
       const {data} = res
       const members = data.results[0]
       setData([...members.members]);
+      setLoading(false)
     } catch(err) {
       console.log(err)
     }
@@ -22,7 +24,7 @@ const useMembers = () => {
     fetchMembers()
   }, [])
   
-  return {data}
+  return {data, loading}
 
 }
 

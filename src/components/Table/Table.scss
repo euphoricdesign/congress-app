@@ -1,7 +1,7 @@
 .App {
   text-align: center;
   position: relative;
-  top: 12vh;
+  top: 5vh;
   height: 300px; 
   overflow: auto;
   -webkit-box-shadow: 2px 3px 9px 0px rgb(64 64 64 / 35%); 
@@ -37,15 +37,20 @@ table, th, td {
 th,td {
   padding: 12px;
 }
-th {
-  width: 25%;
-}
+// th {
+//   width: 25%;
+// }
 tr {
   color: #383434;
 }
 tbody tr:nth-child(odd) {
   background: linear-gradient(to bottom, #D5DEE7 0%, #E8EBF2 50%, #E2E7ED 100%), linear-gradient(to bottom, rgba(0,0,0,0.02) 50%, rgba(255,255,255,0.02) 61%, rgba(0,0,0,0.02) 73%), linear-gradient(33deg, rgba(255,255,255,0.20) 0%, rgba(0,0,0,0.20) 100%);
   background-blend-mode: normal,color-burn;
+}
+
+tfoot td {
+  font-weight: 700;
+  background: linear-gradient(to bottom, #D5DEE7 0%, #E8EBF2 50%, #E2E7ED 100%), linear-gradient(to bottom, rgba(0,0,0,0.02) 50%, rgba(255,255,255,0.02) 61%, rgba(0,0,0,0.02) 73%), linear-gradient(33deg, rgba(255,255,255,0.20) 0%, rgba(0,0,0,0.20) 100%);
 }
 .loading {
   text-align: center;
@@ -93,4 +98,22 @@ tbody tr:nth-child(odd) {
       font-size: 14px;
     }
   }
+}
+
+.link {
+  color: #383434;
+  text-decoration: none;
+
+  &:hover {
+    color: #0241bd99;
+  }
+}
+
+.loader {
+  text-align: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  margin-top: 20%;
 }
