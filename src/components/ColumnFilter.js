@@ -9,7 +9,7 @@ export default function ColumnFilter({column}) {
         <div>
           <input 
           value={filterValue || ''} 
-          onChange={e => setFilter(e.target.value)} 
+          onChange={e => setFilter(...e.target.value)} 
         />
       </div>
       </Container>

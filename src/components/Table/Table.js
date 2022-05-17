@@ -14,7 +14,7 @@ export default function TableComponent() {
   const {data, loading} = useMembers()
   // console.log(data)
 
-  const {advancedSearchActive} =useContext(myContext)
+  const {advancedSearchActive} = useContext(myContext)
   
   const columns = useMemo(() => COLUMNS,[])
   const congressPerson = useMemo(() => data,[data])
@@ -71,7 +71,7 @@ export default function TableComponent() {
               return (
                 <tr {...row.getRowProps()}>
                   {row.cells.map(cell => {
-                    return <td {...cell.getCellProps()}><Link className='link' to={`/members/${row.original.id}`} key={cell.row.id}>{cell.render('Cell')}</Link></td>
+                    return <td style={{"minWidth":"160px"}} {...cell.getCellProps()}><Link className='link' to={`/members/${row.original.id}`} key={cell.row.id}>{cell.render('Cell')}</Link></td>
                   })}
                 </tr>
               )
